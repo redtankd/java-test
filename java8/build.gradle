@@ -1,0 +1,11 @@
+apply plugin: 'application'
+
+//applicationName = "redtank"
+
+mainClassName = System.getProperty("mainClass")
+mainClassName = mainClassName ? mainClassName : "test.Main"
+sourceCompatibility = 1.8
+
+dependencies {
+
+}

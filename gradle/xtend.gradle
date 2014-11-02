@@ -1,0 +1,91 @@
+/////////////////////////////////////////////////////////////////////
+// configuration for xtend
+// the java and eclipse plugins are required.
+
+import org.apache.log4j.BasicConfigurator
+import org.eclipse.xtend.core.XtendStandaloneSetup
+import org.eclipse.xtend.core.compiler.batch.XtendBatchCompiler
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath group: 'org.eclipse.xtend',
+                name: 'org.eclipse.xtend.standalone',
+                version: '2.4.3'
+    }
+}
+
+eclipse {
+    project {
+        natures 'org.eclipse.xtext.ui.shared.xtextNature'
+        buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
+    }
+}
+
+def srcMainXtendDir = file('src/main/java')
+def srcMainXtendGenDir = file('src/main/xtend-gen')
+def srcTestXtendDir = file('src/test/java')
+def srcTestXtendGenDir = file('src/test/xtend-gen')
+
+sourceSets {
+    main {
+        java {
+            srcDir srcMainXtendGenDir
+        }
+    }
+    test {
+        java {
+            srcDir srcTestXtendGenDir
+        }
+    }
+}
+
+task compileXtend {
+    inputs.dir srcMainXtendDir
+    outputs.dir srcMainXtendGenDir
+
+    doLast {
+        def srcPath = srcMainXtendDir.absolutePath
+        def targetPath = srcMainXtendGenDir.absolutePath
+        def classpath = configurations.compile.asPath
+
+        BasicConfigurator.configure()
+        XtendBatchCompiler compiler = new XtendStandaloneSetup()
+                .createInjectorAndDoEMFRegistration()
+                .getInstance(XtendBatchCompiler.class)
+        compiler.setOutputPath(targetPath)
+        compiler.setClassPath(classpath)
+        compiler.setSourcePath(srcPath)
+        if (!compiler.compile()) {
+            throw new GradleException("Xtend compilation failed.");
+        }
+    }
+}
+
+task compileTestXtend {
+    inputs.dir srcTestXtendDir
+    outputs.dir srcTestXtendGenDir
+
+    doLast {
+        def srcPath = srcTestXtendDir.absolutePath
+        def targetPath = srcTestXtendGenDir.absolutePath
+        def classpath = configurations.testCompile.asPath
+
+        BasicConfigurator.configure()
+        XtendBatchCompiler compiler = new XtendStandaloneSetup()
+                .createInjectorAndDoEMFRegistration()
+                .getInstance(XtendBatchCompiler.class)
+        compiler.setOutputPath(targetPath)
+        compiler.setClassPath(classpath)
+        compiler.setSourcePath(srcPath)
+        if (!compiler.compile()) {
+            throw new GradleException("Xtend compilation failed.");
+        }
+    }
+}
+
+tasks.compileJava.dependsOn compileXtend
+tasks.compileTestJava.dependsOn compileTestXtend

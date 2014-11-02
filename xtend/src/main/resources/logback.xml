@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user -->
+<!-- -->
+<!-- For professional support please see -->
+<!-- http://www.qos.ch/shop/products/professionalSupport -->
+<!-- -->
+<configuration>
+
+	<!-- ################################################################### -->
+	<!-- java system properties : block begin -->
+
+	<!-- fms.home.dir -->
+	<!-- the log file's location -->
+
+	<!-- fms.application.name -->
+	<!-- the log' filename is ${fms.application.name}.log -->
+
+	<!-- fms.log.mode -->
+	<!-- console(the default), debug or production -->
+
+	<!-- java system properties : block end -->
+	<!-- ################################################################### -->
+
+	<if condition='isDefined("fms.application.name")'>
+		<then>
+		</then>
+		<else>
+			<property name="fms.application.name" value="Unknown" />
+		</else>
+	</if>	
+
+	<if condition='isDefined("fms.home.dir")'>
+		<then>
+			<property name="fms.log.path" value="${fms.home.dir}/log/" />
+		</then>
+		<else>
+			<property name="fms.log.path" value="log/" />
+		</else>
+	</if>
+	
+	<property name="fms.log.format"
+		value="${HOSTNAME}||AP||${fms.application.name}||%5level||%date||%logger{1} - %message%n" />
+
+	<jmxConfigurator />
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${fms.log.format}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!-- <appender name="ROLLING_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender
+		<File>${fms.log.path}/${fms.application.name}.log</File>
+		<Append>true</Append>
+		<encoder>
+			<pattern>${fms.log.format}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${fms.log.path}/${fms.application.name}-%d{yyyyMMdd}-%i.log
+			</FileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>30Mb</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender> -->
+
+	<!-- <appender name="audit"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender
+		<append>true</append>
+		<file>${fms.log.path}/audit/${fms.application.name}-audit.log</file>
+		<encoder>
+			<pattern>${fms.log.format}</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>
+				${fms.log.path}/${fms.application.name}-audit-%d{yyyyMMdd}-%i.log
+			</FileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>30Mb</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender> -->
+
+	<logger name="org.eclipse.jetty" level="INFO" />
+	<logger name="org.springframework" level="info" />
+	<logger name="org.apache.xbean" level="WARN" />
+	<logger name="org.apache.activemq" level="WARN" />
+	<!-- <logger name="org.apache.activemq.audit" additivity="false"
+		level="INFO">
+		<appender-ref ref="audit" />
+	</logger> -->
+
+	<if condition='property("fms.log.mode").contains("debug")'>
+		<then>
+			<root level="debug">
+				<appender-ref ref="ROLLING_FILE" />
+				<appender-ref ref="CONSOLE" />
+			</root>
+			<logger name="org.springframework" level="debug" />
+			<logger name="org.apache.activemq" level="debug" />
+		</then>
+		<else>
+			<if condition='property("fms.log.mode").contains("production")'>
+				<then>
+					<root level="INFO">
+						<appender-ref ref="ROLLING_FILE" />
+					</root>
+				</then>
+				<else>
+					<!-- the default -->
+					<root level="info">
+						<!-- <appender-ref ref="ROLLING_FILE" /> -->
+						<appender-ref ref="CONSOLE" />
+					</root>
+				</else>
+			</if>
+		</else>
+	</if>
+
+</configuration>

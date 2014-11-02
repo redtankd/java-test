@@ -1,0 +1,25 @@
+apply plugin: 'application'
+
+//applicationName = "redtank"
+
+mainClassName = System.getProperty("mainClass")
+mainClassName = mainClassName ? mainClassName : "javafx.Test1"
+
+dependencies {
+    compile jDeps.xtend
+    compile jDeps.asm
+
+	compile jDeps['springContext']
+    compile jDeps.springWebmvc
+    compile jDeps.springShell
+
+    compile jDeps.jettyServlet
+    compile jDeps.undertowServlet
+
+    compile jDeps.netty
+    compile jDeps.sshd
+    
+    compile jDeps.commonsConf
+    compile jDeps.config
+    compile jDeps.jacksonDatabind
+}
