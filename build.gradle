@@ -31,8 +31,8 @@ subprojects {
 
     dependencies {
         // log system
-        def slf4jVersion = '1.7.6'
-        compile "ch.qos.logback:logback-classic:1.1.1"
+        def slf4jVersion = '1.7.7'
+        compile "ch.qos.logback:logback-classic:1.1.2"
         compile "org.codehaus.janino:janino:2.6.1"
         compile "org.slf4j:slf4j-api:${slf4jVersion}"
         compile "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
@@ -58,20 +58,19 @@ subprojects {
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
 
     dependencies {
-        classpath 'org.xtend:xtend-gradle-plugin:0.1.7'
+        classpath 'org.xtend:xtend-gradle-plugin:0.3.3'
     }
 }
 
 // configure(subprojects.findAll { ['xtend'].contains(it.name) }) {
 subprojects {
-    apply plugin: 'xtend'
+    apply plugin: 'org.xtend.xtend'
 
     xtend {
-        useDaemon = true
         xtendAsPrimaryDebugSource = true
         hideSyntheticVariables = false
         encoding = "UTF-8"
@@ -82,15 +81,15 @@ subprojects {
 /////////////////////////////////////////////////////////////////////
 // java projects: the java dependencies management
 
-ext.jSpringVersion    = '4.1.0.RELEASE'
-ext.jSpringIntVersion = '4.0.4.RELEASE'
-ext.jJettyVersion     = '9.1.4.v20140401'
-ext.jUndertowVersion  = '1.0.8.Final'
+ext.jSpringVersion    = '4.1.2.RELEASE'
+ext.jSpringIntVersion = '4.1.0.RELEASE'
+ext.jJettyVersion     = '9.2.5.v20141112'
+ext.jUndertowVersion  = '1.1.0.Final'
 
 ext.jDeps = [ // Groovy map literal
     // language
-    xtend:       "org.eclipse.xtend:org.eclipse.xtend.lib:2.7.2",
-    asm:         "org.ow2.asm:asm-all:5.0.1",
+    xtend:       "org.eclipse.xtend:org.eclipse.xtend.lib:2.7.3",
+    asm:         "org.ow2.asm:asm-all:5.0.3",
 
     // spring
     springContext: "org.springframework:spring-context:$jSpringVersion",
@@ -101,18 +100,18 @@ ext.jDeps = [ // Groovy map literal
     springShell:   "org.springframework.shell:spring-shell:1.1.0.RELEASE",
 
     // middleware
-    activemq:        "org.apache.activemq:activemq-broker:5.8.0",
+    activemq:        "org.apache.activemq:activemq-broker:5.10.0",
     jettyServer:     "org.eclipse.jetty:jetty-server:$jJettyVersion",
     jettyServlet:    "org.eclipse.jetty:jetty-servlet:$jJettyVersion",
     jettyWebapp:     "org.eclipse.jetty:jetty-webapp:$jJettyVersion",
     undertowServlet: "io.undertow:undertow-servlet:$jUndertowVersion",
 
     // network
-    netty: "io.netty:netty-all:4.0.17.Final",
-    sshd:  "org.apache.sshd:sshd-core:0.10.1",
+    netty: "io.netty:netty-all:4.0.24.Final",
+    sshd:  "org.apache.sshd:sshd-core:0.13.0",
 
     // util
-    commonsConf:     "commons-configuration:commons-configuration:1.9",
-    config:          "com.typesafe:config:1.2.0",
-    jacksonDatabind: "com.fasterxml.jackson.core:jackson-databind:2.2.2"
+    commonsConf:     "commons-configuration:commons-configuration:1.10",
+    config:          "com.typesafe:config:1.2.1",
+    jacksonDatabind: "com.fasterxml.jackson.core:jackson-databind:2.4.3"
 ]
