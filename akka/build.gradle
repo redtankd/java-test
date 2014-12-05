@@ -1,0 +1,14 @@
+apply plugin: 'application'
+
+applicationName = "akka"
+
+mainClassName = System.getProperty("mainClass")
+mainClassName = mainClassName ? mainClassName : "supervision.Main"
+
+dependencies {
+    compile jDeps.xtend
+    compile jDeps.akkaActor
+    compile jDeps.akkaContrib
+
+    testCompile jDeps.akkaTest
+}

@@ -1,1 +1,1 @@
-include 'xtend', 'java8'
+include 'akka', 'xtend', 'java8'

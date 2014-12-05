@@ -1,0 +1,8 @@
+#Fri Dec 05 20:26:16 CST 2014
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/main/java.directory=build/xtend-gen/main
+outlet.DEFAULT_OUTPUT.installDslAsPrimarySource=true
+eclipse.preferences.version=1
+outlet.DEFAULT_OUTPUT.hideLocalSyntheticVariables=false
+outlet.DEFAULT_OUTPUT.userOutputPerSourceFolder=true
+//outlet.DEFAULT_OUTPUT.sourceFolder.src/test/java.directory=build/xtend-gen/test
+is_project_specific=true

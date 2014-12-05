@@ -86,6 +86,7 @@ ext.jSpringVersion    = '4.1.2.RELEASE'
 ext.jSpringIntVersion = '4.1.0.RELEASE'
 ext.jJettyVersion     = '9.2.5.v20141112'
 ext.jUndertowVersion  = '1.1.0.Final'
+ext.jAkkaVersion      = '2.11:2.3.7'
 
 ext.jDeps = [ // Groovy map literal
     // language
@@ -106,6 +107,9 @@ ext.jDeps = [ // Groovy map literal
     jettyServlet:    "org.eclipse.jetty:jetty-servlet:$jJettyVersion",
     jettyWebapp:     "org.eclipse.jetty:jetty-webapp:$jJettyVersion",
     undertowServlet: "io.undertow:undertow-servlet:$jUndertowVersion",
+    akkaActor:       "com.typesafe.akka:akka-actor_$jAkkaVersion",
+    akkaContrib:       "com.typesafe.akka:akka-contrib_$jAkkaVersion",
+    akkaTest:        "com.typesafe.akka:akka-testkit_$jAkkaVersion",
 
     // network
     netty: "io.netty:netty-all:4.0.24.Final",
