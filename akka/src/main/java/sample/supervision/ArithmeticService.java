@@ -1,4 +1,4 @@
-package supervision;
+package sample.supervision;
 
 import akka.actor.*;
 import akka.japi.pf.DeciderBuilder;
@@ -9,9 +9,9 @@ import scala.runtime.BoxedUnit;
 import java.util.HashMap;
 import java.util.Map;
 
-import static  supervision.FlakyExpressionCalculator.FlakinessException;
-import static  supervision.FlakyExpressionCalculator.Result;
-import static  supervision.FlakyExpressionCalculator.Position.Left;
+import static sample.supervision.FlakyExpressionCalculator.FlakinessException;
+import static sample.supervision.FlakyExpressionCalculator.Result;
+import static sample.supervision.FlakyExpressionCalculator.Position.Left;
 
 // A very simple service that accepts arithmetic expressions and tries to
 // evaluate them. Since the calculation is dangerous (at least for the sake

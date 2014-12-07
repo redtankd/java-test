@@ -6,7 +6,6 @@ mainClassName = System.getProperty("mainClass")
 mainClassName = mainClassName ? mainClassName : "javafx.Test1"
 
 dependencies {
-    compile jDeps.xtend
     compile jDeps.asm
 
     compile jDeps['springContext']

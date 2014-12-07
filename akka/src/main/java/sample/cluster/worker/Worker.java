@@ -1,22 +1,23 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.*;
 import akka.contrib.pattern.ClusterClient.SendToAll;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.japi.Function;
+
 import java.io.Serializable;
 import java.util.UUID;
+
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
-
 import static akka.actor.SupervisorStrategy.Directive;
 import static akka.actor.SupervisorStrategy.escalate;
 import static akka.actor.SupervisorStrategy.restart;
 import static akka.actor.SupervisorStrategy.stop;
-import static worker.Master.Ack;
-import static worker.Master.Work;
-import static worker.MasterWorkerProtocol.*;
+import static sample.cluster.worker.Master.Ack;
+import static sample.cluster.worker.Master.Work;
+import static sample.cluster.worker.MasterWorkerProtocol.*;
 
 public class Worker extends UntypedActor {
 

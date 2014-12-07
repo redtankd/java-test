@@ -1,4 +1,4 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.*;
 import akka.cluster.Cluster;
@@ -27,7 +27,7 @@ public class Main {
 
   public static Address startBackend(Address joinAddress, String role) {
     Config conf = ConfigFactory.parseString("akka.cluster.roles=[" + role + "]").
-      withFallback(ConfigFactory.load());
+      withFallback(ConfigFactory.load("cluster-work"));
     ActorSystem system = ActorSystem.create(systemName, conf);
     Address realJoinAddress =
       (joinAddress == null) ? Cluster.get(system).selfAddress() : joinAddress;

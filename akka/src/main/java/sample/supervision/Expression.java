@@ -1,4 +1,4 @@
-package supervision;
+package sample.supervision;
 
 // Represents an arithmetic expression involving integer numbers
 public interface Expression {

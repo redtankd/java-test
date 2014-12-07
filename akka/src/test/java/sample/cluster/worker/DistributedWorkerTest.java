@@ -1,16 +1,22 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.*;
 import akka.cluster.Cluster;
 import akka.contrib.pattern.*;
 import akka.testkit.JavaTestKit;
+
 import java.util.*;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import sample.cluster.worker.Frontend;
+import sample.cluster.worker.Master;
+import sample.cluster.worker.WorkExecutor;
+import sample.cluster.worker.Worker;
 import scala.concurrent.duration.Duration;
 import scala.concurrent.duration.FiniteDuration;
-
 import static org.junit.Assert.assertEquals;
 
 public class DistributedWorkerTest {

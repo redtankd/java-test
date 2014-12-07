@@ -1,4 +1,4 @@
-package supervision;
+package sample.supervision;
 
 import akka.actor.*;
 import akka.japi.pf.DeciderBuilder;
@@ -13,8 +13,8 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static supervision.Expression.*;
-import static supervision.FlakyExpressionCalculator.Position.*;
+import static sample.supervision.Expression.*;
+import static sample.supervision.FlakyExpressionCalculator.Position.*;
 
 public class FlakyExpressionCalculator extends AbstractLoggingActor {
 

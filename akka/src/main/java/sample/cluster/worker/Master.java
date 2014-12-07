@@ -1,4 +1,4 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.*;
 import akka.contrib.pattern.DistributedPubSubExtension;
@@ -6,13 +6,14 @@ import akka.contrib.pattern.DistributedPubSubMediator.Put;
 import akka.contrib.pattern.DistributedPubSubMediator;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+
 import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+
 import scala.concurrent.duration.Deadline;
 import scala.concurrent.duration.FiniteDuration;
-
-import static worker.MasterWorkerProtocol.*;
+import static sample.cluster.worker.MasterWorkerProtocol.*;
 
 public class Master extends UntypedActor {
 

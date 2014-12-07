@@ -1,21 +1,36 @@
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.2.1'
-    distributionUrl = "../gradle-${gradleVersion}-bin.zip"
-}
-
 allprojects {
     version = '1.0'
 }
 
-
 /////////////////////////////////////////////////////////////////////
 // java projects: common configuration
 
-// configure(subprojects.findAll { ['xtend'].contains(it.name) }) {
 subprojects {
     apply plugin: 'java'
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+
+    dependencies {
+        // log system
+        def slf4jVersion = '1.7.7'
+        compile "org.slf4j:slf4j-api:${slf4jVersion}"
+        compile "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
+        compile "org.slf4j:jul-to-slf4j:${slf4jVersion}"
+        compile "ch.qos.logback:logback-classic:1.1.2"
+        compile "org.codehaus.janino:janino:2.6.1"
+
+        testCompile "junit:junit:4.12"
+    }
+
+    configurations {
+        // *. is groovy's spread operator
+        all*.exclude module: "commons-logging"
+        all*.exclude module: "log4j"
+        all*.exclude module: "mina-core"
+    }
+
+    sourceSets.main.resources.srcDir 'src/main/java' 
+    sourceSets.test.resources.srcDir 'src/test/java' 
 
     eclipseJdt << {
         File f1 = file('.settings/org.eclipse.core.resources.prefs')
@@ -27,49 +42,39 @@ subprojects {
         f2.append('line.separator=\\n')
     }
 
-    sourceSets.main.resources.srcDir 'src/main/java' 
-    sourceSets.test.resources.srcDir 'src/test/java' 
-
-    dependencies {
-        // log system
-        def slf4jVersion = '1.7.7'
-        compile "ch.qos.logback:logback-classic:1.1.2"
-        compile "org.codehaus.janino:janino:2.6.1"
-        compile "org.slf4j:slf4j-api:${slf4jVersion}"
-        compile "org.slf4j:jcl-over-slf4j:${slf4jVersion}"
-        compile "org.slf4j:jul-to-slf4j:${slf4jVersion}"
-
-        testCompile "junit:junit:4.11"
-    }
-
-    configurations {
-        all*.exclude module: "commons-logging"
-        all*.exclude module: "log4j"
-        all*.exclude module: "mina-core"
-    }
-
     repositories {
+        maven {
+            url "http://maven.oschina.net/content/groups/public/"
+        }
         mavenCentral()
     }
 }
 
-
 /////////////////////////////////////////////////////////////////////
 // java projects: xtend configuration
 
+def xtendProjects = ['xtend']
+
 buildscript {
-    repositories {
-        jcenter()
+    dependencies {
+        classpath 'org.xtend:xtend-gradle-plugin:0.3.4'
     }
 
-    dependencies {
-        classpath 'org.xtend:xtend-gradle-plugin:0.3.3'
+    repositories {
+        maven {
+            url "http://maven.oschina.net/content/groups/public/"
+        }
+        mavenCentral()
     }
 }
 
-// configure(subprojects.findAll { ['xtend'].contains(it.name) }) {
-subprojects {
+configure(subprojects.findAll { xtendProjects.contains(it.name) }) {
+// subprojects {
     apply plugin: 'org.xtend.xtend'
+
+    dependencies {
+        compile "org.eclipse.xtend:org.eclipse.xtend.lib:2.7.3"
+    }
 
     xtend {
         xtendAsPrimaryDebugSource = true
@@ -78,21 +83,15 @@ subprojects {
     }
 }
 
-
 /////////////////////////////////////////////////////////////////////
 // java projects: the java dependencies management
 
 ext.jSpringVersion    = '4.1.2.RELEASE'
 ext.jSpringIntVersion = '4.1.0.RELEASE'
 ext.jJettyVersion     = '9.2.5.v20141112'
-ext.jUndertowVersion  = '1.1.0.Final'
 ext.jAkkaVersion      = '2.11:2.3.7'
 
 ext.jDeps = [ // Groovy map literal
-    // language
-    xtend:       "org.eclipse.xtend:org.eclipse.xtend.lib:2.7.3",
-    asm:         "org.ow2.asm:asm-all:5.0.3",
-
     // spring
     springContext: "org.springframework:spring-context:$jSpringVersion",
     springJdbc:    "org.springframework:spring-jdbc:$jSpringVersion",
@@ -102,13 +101,13 @@ ext.jDeps = [ // Groovy map literal
     springShell:   "org.springframework.shell:spring-shell:1.1.0.RELEASE",
 
     // middleware
-    activemq:        "org.apache.activemq:activemq-broker:5.10.0",
+    activemq:        "org.apache.activemq:activemq-broker:5.10",
     jettyServer:     "org.eclipse.jetty:jetty-server:$jJettyVersion",
     jettyServlet:    "org.eclipse.jetty:jetty-servlet:$jJettyVersion",
     jettyWebapp:     "org.eclipse.jetty:jetty-webapp:$jJettyVersion",
-    undertowServlet: "io.undertow:undertow-servlet:$jUndertowVersion",
+    undertowServlet: "io.undertow:undertow-servlet:1.1.1.Final",
     akkaActor:       "com.typesafe.akka:akka-actor_$jAkkaVersion",
-    akkaContrib:       "com.typesafe.akka:akka-contrib_$jAkkaVersion",
+    akkaContrib:     "com.typesafe.akka:akka-contrib_$jAkkaVersion",
     akkaTest:        "com.typesafe.akka:akka-testkit_$jAkkaVersion",
 
     // network
@@ -116,7 +115,16 @@ ext.jDeps = [ // Groovy map literal
     sshd:  "org.apache.sshd:sshd-core:0.13.0",
 
     // util
+    asm:             "org.ow2.asm:asm-all:5.0.3",
     commonsConf:     "commons-configuration:commons-configuration:1.10",
     config:          "com.typesafe:config:1.2.1",
     jacksonDatabind: "com.fasterxml.jackson.core:jackson-databind:2.4.3"
 ]
+
+/////////////////////////////////////////////////////////////////////
+// other
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+    distributionUrl = "../gradle-${gradleVersion}-bin.zip"
+}

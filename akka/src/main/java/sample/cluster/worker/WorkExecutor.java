@@ -1,4 +1,4 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.UntypedActor;
 import akka.event.Logging;

@@ -1,8 +1,7 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.Address;
-
-import static worker.Main.*;
+import static sample.cluster.worker.Main.*;
 
 public class MainManyMasters {
 

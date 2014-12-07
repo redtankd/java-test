@@ -1,16 +1,20 @@
-package supervision;
+package sample.supervision;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
 import akka.actor.Status;
 import akka.testkit.JavaTestKit;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import sample.supervision.ArithmeticService;
+
 import java.util.stream.IntStream;
-import static supervision.Expression.*;
+
+import static sample.supervision.Expression.*;
 
 public class ArithmeticServiceTest {
   static ActorSystem system;

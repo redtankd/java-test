@@ -5,8 +5,11 @@ applicationName = "akka"
 mainClassName = System.getProperty("mainClass")
 mainClassName = mainClassName ? mainClassName : "supervision.Main"
 
+run {
+	args System.getProperty("exec.args").split() 
+}
+
 dependencies {
-    compile jDeps.xtend
     compile jDeps.akkaActor
     compile jDeps.akkaContrib
 

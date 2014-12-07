@@ -1,4 +1,4 @@
-package worker;
+package sample.cluster.worker;
 
 import java.io.Serializable;
 

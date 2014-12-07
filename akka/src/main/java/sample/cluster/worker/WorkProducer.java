@@ -1,18 +1,19 @@
-package worker;
+package sample.cluster.worker;
 
 import akka.actor.ActorRef;
 import akka.actor.Scheduler;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
+
 import java.util.UUID;
+
+import sample.cluster.worker.Master.Work;
 import scala.concurrent.duration.*;
 import scala.concurrent.ExecutionContext;
 import scala.concurrent.forkjoin.ThreadLocalRandom;
-import worker.Master.Work;
-
-import static worker.Frontend.NotOk;
-import static worker.Frontend.Ok;
+import static sample.cluster.worker.Frontend.NotOk;
+import static sample.cluster.worker.Frontend.Ok;
 
 public class WorkProducer extends UntypedActor {
 

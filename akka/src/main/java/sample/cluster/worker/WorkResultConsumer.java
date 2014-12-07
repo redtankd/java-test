@@ -1,12 +1,12 @@
-package worker;
+package sample.cluster.worker;
 
+import sample.cluster.worker.Master.WorkResult;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 import akka.contrib.pattern.DistributedPubSubExtension;
 import akka.contrib.pattern.DistributedPubSubMediator;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
-import worker.Master.WorkResult;
 
 public class WorkResultConsumer extends UntypedActor {
 
