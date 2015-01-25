@@ -49,7 +49,9 @@ public class Main {
   }
 
   public static void startFrontend(Address joinAddress) {
-    ActorSystem system = ActorSystem.create(systemName);
+	  Config conf = ConfigFactory.parseString("akka.cluster.roles=[frontend]").
+		      withFallback(ConfigFactory.load("cluster-work"));
+    ActorSystem system = ActorSystem.create(systemName, conf);
     Cluster.get(system).join(joinAddress);
     ActorRef frontend = system.actorOf(Props.create(Frontend.class), "frontend");
     system.actorOf(Props.create(WorkProducer.class, frontend), "producer");
