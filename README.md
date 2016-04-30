@@ -1,8 +1,6 @@
-测试如下技术
+# My Test Projects for Java Technology
 
-Gradle
-Intellij Idea
-
-Xtend
+* Gradle
+* Xtend
 
 

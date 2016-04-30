@@ -1,0 +1,18 @@
+# Sublime Text
+*.sublime-workspace
+
+# for Eclipse
+bin
+
+# IntelliJ IDEA's projects
+.idea
+*.iml
+
+# build system
+.gradle
+build
+target
+
+# nodejs
+node_modules
+bower_components
