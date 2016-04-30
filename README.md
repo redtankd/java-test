@@ -2,5 +2,3 @@
 
 * Gradle
 * Xtend
-
-
