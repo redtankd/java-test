@@ -1,11 +1,5 @@
 package org.redtank.net
 
-import io.undertow.Undertow
-import io.undertow.io.IoCallback
-import io.undertow.io.Sender
-import io.undertow.server.HttpHandler
-import io.undertow.server.HttpServerExchange
-import io.undertow.util.Headers
 import java.io.IOException
 import org.springframework.context.Lifecycle
 import org.springframework.context.annotation.AnnotationConfigApplicationContext
