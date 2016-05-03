@@ -12,6 +12,10 @@ buildscript {
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
 
+task clean {
+    delete "${buildDir}"
+}
+
 repositories {
     mavenCentral()
     jcenter()
@@ -106,11 +110,8 @@ ext.jDeps = [ // Groovy map literal
 /////////////////////////////////////////////////////////////////////
 // Code Coverage
 
-// Only report code coverage for projects that are tested,
-// or jacocoRootReport will be skipped.
-def publishedProjects = subprojects.findAll { 
-    it.path == ':xtend' || it.path == ':util:config';  
-}
+// Only report code coverage for projects that are published
+def publishedProjects = subprojects.findAll { it.path == ':xtend'; true }
 
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
   description = 'Generates an aggregate report from all subprojects'
@@ -120,14 +121,11 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
   sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
   classDirectories = files(publishedProjects.sourceSets.main.output)
   executionData = files(publishedProjects.jacocoTestReport.executionData)
+  executionData = files(executionData.findAll { it.exists() })
 
   reports {
     html.enabled = true // human readable
     xml.enabled = true // required by coveralls
-  }
-
-  doFirst {
-    executionData = files(executionData.findAll { it.exists() })
   }
 }
 
