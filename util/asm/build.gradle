@@ -12,7 +12,5 @@ mainClassName = mainClassName ? mainClassName : "javafx.Test1"
 dependencies {
     compile jDeps.xtend
 
-    compile jDeps['springContext']
-    compile jDeps.netty
-    compile jDeps.commonsConf
+    compile jDeps.asm
 }

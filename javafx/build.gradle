@@ -7,12 +7,8 @@ apply plugin: 'application'
 //applicationName = "redtank"
 
 mainClassName = System.getProperty("mainClass")
-mainClassName = mainClassName ? mainClassName : "javafx.Test1"
+mainClassName = mainClassName ? mainClassName : "javafx.Test"
 
 dependencies {
     compile jDeps.xtend
-
-    compile jDeps['springContext']
-    compile jDeps.netty
-    compile jDeps.commonsConf
 }

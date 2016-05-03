@@ -1,1 +1,8 @@
-include 'xtend', 'java8'
+include 'net:http', 
+        'net:sshd', 
+        'spring:spring-shell',
+        'util:asm', 
+        'util:config', 
+        'javafx',         
+        'java8',
+        'xtend'
