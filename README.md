@@ -1,5 +1,7 @@
 # My Test Projects for Java Technology
 
+[![Build Status](https://travis-ci.org/redtankd/java-test.svg?branch=master)](https://travis-ci.org/redtankd/java-test) [![Coverage Status](https://coveralls.io/repos/github/redtankd/java-test/badge.svg?branch=master)](https://coveralls.io/github/redtankd/java-test?branch=master)
+
 ## Build System
 
 * Gradle
