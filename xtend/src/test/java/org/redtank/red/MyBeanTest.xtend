@@ -24,7 +24,6 @@ class MyBeanTest
 	@Test
 	def void test()
 	{
-		fail("Not yet implemented");
 	}
 
 }
