@@ -6,6 +6,7 @@ import com.typesafe.config.ConfigParseOptions
 import com.typesafe.config.ConfigRenderOptions
 import com.typesafe.config.ConfigSyntax
 import java.io.StringWriter
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class Test
 {
@@ -97,5 +98,6 @@ class Test
 			}
 		}
 	'''
-
+	
+	@Accessors val test = "One"
 }

@@ -1,5 +1,20 @@
-allprojects {
-    version = '1.0'
+buildscript {
+    dependencies {
+        classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3"
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
+
+repositories {
+    mavenCentral()
+    jcenter()
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -7,8 +22,11 @@ allprojects {
 
 subprojects {
     apply plugin: 'java'
+
     apply plugin: 'eclipse'
     apply plugin: 'idea'
+
+    apply plugin: 'jacoco'
 
     dependencies {
         // log system
@@ -44,19 +62,7 @@ subprojects {
 
     repositories {
         mavenCentral()
-        maven {
-            url "http://maven.oschina.net/content/groups/public/"
-        }
-        
-    }
-}
-
-buildscript {
-    repositories {
-        maven {
-            url "http://maven.oschina.net/content/groups/public/"
-        }
-        mavenCentral()
+        jcenter()
     }
 }
 
@@ -96,3 +102,44 @@ ext.jDeps = [ // Groovy map literal
     config:          "com.typesafe:config:1.3.0",
     jacksonDatabind: "com.fasterxml.jackson.core:jackson-databind:2.7.3"
 ]
+
+/////////////////////////////////////////////////////////////////////
+// Code Coverage
+
+// Only report code coverage for projects that are tested,
+// or jacocoRootReport will be skipped.
+def publishedProjects = subprojects.findAll { 
+    it.path == ':xtend' || it.path == ':util:config';  
+}
+
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+  description = 'Generates an aggregate report from all subprojects'
+  dependsOn(publishedProjects.test)
+
+  additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+  sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+  classDirectories = files(publishedProjects.sourceSets.main.output)
+  executionData = files(publishedProjects.jacocoTestReport.executionData)
+
+  reports {
+    html.enabled = true // human readable
+    xml.enabled = true // required by coveralls
+  }
+
+  doFirst {
+    executionData = files(executionData.findAll { it.exists() })
+  }
+}
+
+coveralls {
+  sourceDirs = publishedProjects.sourceSets.main.allSource.srcDirs.flatten()
+  jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+}
+
+tasks.coveralls {
+  group = 'Coverage reports'
+  description = 'Uploads the aggregated coverage report to Coveralls'
+
+  dependsOn jacocoRootReport
+  onlyIf { System.env.'CI' }
+}

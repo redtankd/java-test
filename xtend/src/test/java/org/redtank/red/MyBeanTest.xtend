@@ -22,8 +22,10 @@ class MyBeanTest
 	}
 
 	@Test
-	def void test()
-	{
+	def void test() {
+		val bean = new MyBean("a")
+		
+		assertEquals("a", bean.name)
 	}
 
 }
