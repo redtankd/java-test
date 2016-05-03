@@ -1,6 +1,7 @@
 include 'net:http', 
         'net:sshd', 
         'spring:spring-shell',
+        'spring:spring-integration',
         'util:asm', 
         'util:config', 
         'javafx',         

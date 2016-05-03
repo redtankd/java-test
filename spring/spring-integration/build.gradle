@@ -1,0 +1,12 @@
+plugins {
+  id "org.xtext.xtend" version "1.0.5"
+}
+
+dependencies {
+    compile jDeps.xtend
+
+    compile jDeps['springContext']
+    compile jDeps.springInt
+    compile jDeps.springIntDsl
+    compile jDeps.springBoot
+}
