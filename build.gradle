@@ -1,5 +1,6 @@
 buildscript {
     dependencies {
+        classpath "org.xtext:xtext-gradle-plugin:1.0.5"
         classpath "org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.6.3"
     }
 
@@ -71,6 +72,27 @@ subprojects {
 }
 
 /////////////////////////////////////////////////////////////////////
+// java projects: xtend configuration
+
+configure(subprojects.findAll { 
+    it.path != ":java8" &&
+    file(it.rootDir.getPath() + "/build.gradle").exists()
+}) {
+    apply plugin: "org.xtext.xtend"
+
+    xtend {
+        debugger {
+            sourceInstaller = 'PRIMARY'
+            hideSyntheticVariables = true
+        }
+    }
+
+    dependencies {
+        compile "org.eclipse.xtend:org.eclipse.xtend.lib:2.9.2"
+    }
+}
+
+/////////////////////////////////////////////////////////////////////
 // java projects: the java dependencies management
 
 ext.jSpringVersion    = '4.2.5.RELEASE'
@@ -78,9 +100,6 @@ ext.jSpringIntVersion = '4.2.5.RELEASE'
 ext.jJettyVersion     = '9.3.8.v20160314'
 
 ext.jDeps = [ // Groovy map literal
-    // language
-    xtend: "org.eclipse.xtend:org.eclipse.xtend.lib:2.9.2",
-
     // spring
     springContext: "org.springframework:spring-context:$jSpringVersion",
     springJdbc:    "org.springframework:spring-jdbc:$jSpringVersion",
@@ -136,7 +155,6 @@ task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
 coveralls {
     // coveralls.sourceDirs is the dirs that coverall scans
     sourceDirs = publishedProjects.sourceSets.main.allSource.srcDirs.flatten()
-    publishedProjects.each { sourceDirs.push(it.buildDir.getPath() + '/xtend/main') }
 
     jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
