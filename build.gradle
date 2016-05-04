@@ -116,30 +116,35 @@ ext.jDeps = [ // Groovy map literal
 def publishedProjects = subprojects.findAll { it.path == ':xtend'; true }
 
 task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
-  description = 'Generates an aggregate report from all subprojects'
-  dependsOn(publishedProjects.test)
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn(publishedProjects.test)
 
-  additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-  sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
-  classDirectories = files(publishedProjects.sourceSets.main.output)
-  executionData = files(publishedProjects.jacocoTestReport.executionData)
-  executionData = files(executionData.findAll { it.exists() })
+    additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(publishedProjects.sourceSets.main.output)
+    executionData = files(publishedProjects.jacocoTestReport.executionData)
 
-  reports {
-    html.enabled = true // human readable
-    xml.enabled = true // required by coveralls
-  }
+    // exclude projects without test result, or jacocoRootReport will skip
+    executionData = files(executionData.findAll { it.exists() })
+
+    reports {
+        html.enabled = true // human readable
+        xml.enabled = true // required by coveralls
+    }
 }
 
 coveralls {
-  sourceDirs = publishedProjects.sourceSets.main.allSource.srcDirs.flatten()
-  jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    // coveralls.sourceDirs is the dirs that coverall scans
+    sourceDirs = publishedProjects.sourceSets.main.allSource.srcDirs.flatten()
+    publishedProjects.each { sourceDirs.push(it.buildDir.getPath() + '/xtend/main') }
+
+    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
 }
 
 tasks.coveralls {
-  group = 'Coverage reports'
-  description = 'Uploads the aggregated coverage report to Coveralls'
+    group = 'Coverage reports'
+    description = 'Uploads the aggregated coverage report to Coveralls'
 
-  dependsOn jacocoRootReport
-  onlyIf { System.env.'CI' }
+    dependsOn jacocoRootReport
+    onlyIf { System.env.'CI' }
 }
